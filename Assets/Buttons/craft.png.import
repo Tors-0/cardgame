@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crsrqrrgkkkcm"
-path="res://.godot/imported/cloud.png-e830025175efd2860808ff3e54cbb52e.ctex"
+uid="uid://bl8xv13d23r25"
+path="res://.godot/imported/craft.png-84f7e3f1d82762eb113b305fc21ea476.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/cardback/cloud.png"
-dest_files=["res://.godot/imported/cloud.png-e830025175efd2860808ff3e54cbb52e.ctex"]
+source_file="res://Assets/Buttons/craft.png"
+dest_files=["res://.godot/imported/craft.png-84f7e3f1d82762eb113b305fc21ea476.ctex"]
 
 [params]
 

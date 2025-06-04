@@ -41,38 +41,3 @@ const DATA = {
 	White : ["White", "white"],
 	Yellow : ["Yellow", "yellow"]
 }
-
-const VALUES = [
-	"Basalt",
-	"Brown",
-	"Camo",
-	"Carrot",
-	"Cherry",
-	"Cloud",
-	"Copper",
-	"Cornflower",
-	"DarkBlue",
-	"DarkGreen",
-	"Diamond",
-	"Galvanized",
-	"Grass",
-	"Gray",
-	"Green",
-	"LightPink",
-	"Lilac",
-	"Magenta",
-	"Mint",
-	"Olive",
-	"PaynesGray",
-	"Peach",
-	"Pink",
-	"Red",
-	"Retro",
-	"Ruby",
-	"Rusted",
-	"Salmon",
-	"Tapioca",
-	"Wenge",
-	"White",
-	"Yellow"
-]

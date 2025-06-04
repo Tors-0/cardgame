@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bnd1rxvegkjfy"]
+[gd_scene load_steps=13 format=3 uid="uid://bnd1rxvegkjfy"]
 
 [ext_resource type="Script" uid="uid://bpeoubfqmv52d" path="res://Playspace.gd" id="1_5ecp0"]
 [ext_resource type="Texture2D" uid="uid://dg2ls5xispc0d" path="res://backgrounds/perlin.png" id="2_ty8yq"]
@@ -6,22 +6,106 @@
 [ext_resource type="Texture2D" uid="uid://b1s1fw8m5lwgi" path="res://Assets/Cards/deck-cover-highlight.png" id="4_ty8yq"]
 [ext_resource type="Texture2D" uid="uid://b2ljkusncaytv" path="res://Assets/Cards/deck-cover-locked.png" id="4_url1g"]
 [ext_resource type="Script" uid="uid://b4jw5c8kg1w0x" path="res://DeckDraw.gd" id="5_1h11t"]
+[ext_resource type="Texture2D" uid="uid://r3j1j1782tbh" path="res://Assets/UI/textbg.png" id="6_mtt3g"]
+[ext_resource type="Texture2D" uid="uid://b4ggepv20aggn" path="res://Assets/UI/gold.png" id="6_ofwmc"]
+[ext_resource type="Texture2D" uid="uid://cqj64as5n86on" path="res://Assets/Buttons/play.png" id="7_1jsfp"]
+[ext_resource type="Texture2D" uid="uid://bl8xv13d23r25" path="res://Assets/Buttons/craft.png" id="8_ofwmc"]
+[ext_resource type="Texture2D" uid="uid://b6u3v7fno6o7v" path="res://Assets/Buttons/kill.png" id="9_mtt3g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mtt3g"]
+font_size = 32
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Playspace" type="Node2D"]
 script = ExtResource("1_5ecp0")
 
 [node name="Background" type="Sprite2D" parent="."]
+position = Vector2(288, 242)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_ty8yq")
 centered = false
+offset = Vector2(-480, -403.333)
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="ButtonUI" type="CenterContainer" parent="."]
+offset_top = 535.0
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ButtonUI"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ButtonUI/MarginContainer"]
+layout_mode = 2
+
+[node name="Play" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("7_1jsfp")
+texture_pressed = ExtResource("7_1jsfp")
+texture_hover = ExtResource("7_1jsfp")
+texture_disabled = ExtResource("7_1jsfp")
+
+[node name="Craft" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("8_ofwmc")
+texture_pressed = ExtResource("8_ofwmc")
+texture_hover = ExtResource("8_ofwmc")
+texture_disabled = ExtResource("8_ofwmc")
+
+[node name="Kill" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("9_mtt3g")
+texture_pressed = ExtResource("9_mtt3g")
+texture_hover = ExtResource("9_mtt3g")
+texture_disabled = ExtResource("9_mtt3g")
+
+[node name="InfoUI" type="CenterContainer" parent="."]
+offset_top = 542.0
+offset_right = 236.0
+offset_bottom = 648.0
+
+[node name="Gold" type="MarginContainer" parent="InfoUI"]
+custom_minimum_size = Vector2(145, 42)
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="InfoUI/Gold"]
+layout_mode = 2
+texture = ExtResource("6_mtt3g")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="InfoUI/Gold/NinePatchRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Coin" type="Sprite2D" parent="InfoUI/Gold/NinePatchRect/MarginContainer"]
+position = Vector2(3, 19)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("6_ofwmc")
+
+[node name="GoldLabel" type="Label" parent="InfoUI/Gold/NinePatchRect"]
+layout_mode = 2
+offset_left = 38.0
+offset_top = -4.0
+offset_right = 126.0
+offset_bottom = 41.0
+grow_vertical = 2
+text = "00000"
+label_settings = SubResource("LabelSettings_mtt3g")
 
 [node name="Deck" type="Node" parent="."]
 
 [node name="DeckDraw" type="TextureButton" parent="Deck"]
-offset_left = 1042.0
-offset_top = 7.0
-offset_right = 1252.0
-offset_bottom = 317.0
+offset_left = 1044.0
+offset_top = 490.0
+offset_right = 1254.0
+offset_bottom = 800.0
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("3_url1g")
 texture_pressed = ExtResource("3_url1g")
@@ -29,9 +113,19 @@ texture_hover = ExtResource("4_ty8yq")
 texture_disabled = ExtResource("4_url1g")
 script = ExtResource("5_1h11t")
 
-[node name="Cards" type="Node" parent="."]
-
-[node name="CardsLabel" type="Label" parent="."]
+[node name="Debug" type="VBoxContainer" parent="."]
 offset_right = 40.0
-offset_bottom = 23.0
+offset_bottom = 40.0
+
+[node name="CardsDrawn" type="Label" parent="Debug"]
+layout_mode = 2
 text = "Cards Drawn:"
+
+[node name="CardsHeld" type="Label" parent="Debug"]
+layout_mode = 2
+text = "Cards Held:"
+
+[connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Play" to="." method="_on_play_gui_input"]
+[connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Craft" to="." method="_on_craft_gui_input"]
+[connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Kill" to="." method="_on_kill_gui_input"]
+[connection signal="mouse_entered" from="Deck/DeckDraw" to="Deck/DeckDraw" method="_on_mouse_entered"]
