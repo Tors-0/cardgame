@@ -1,4 +1,4 @@
-
+class_name Overlays
 # Info [Value, Displayname, Filename, Effect, Suitless, Skip, Reverse, Draw]
 enum {Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Skip, Reverse, Draw2, Draw4, Wildcard}
 

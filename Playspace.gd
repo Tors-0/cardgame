@@ -8,14 +8,14 @@ const CardStates = preload("res://Cards/CardBase.gd").STATES
 @onready var HandWidth = Vector2(CardSize.x / 2.0, ViewportSize.x - CardSize.x * 1.5)
 @onready var HandHeight = ViewportSize.y - CardSize.y * 2
 
-var angle = 0
-var CardNum = 0
-var OvalAngleVector = Vector2()
-var CardSpread = 2.5
+var angle : float = 0
+var CardNum : int = 0
+var OvalAngleVector : Vector2
+var CardSpread : float = 2.5
 
 # player vars
-var gold = 16
-var gold_format = "%+05d"
+var gold : int = 16
+var gold_format : String = "%+05d"
 
 
 # Called when the node enters the scene tree for the first time.
@@ -24,7 +24,7 @@ func _ready():
 	$InfoUI/Gold/NinePatchRect/GoldLabel.text = gold_format % gold
 
 
-func drawCard(ordinal = null, overlay = null):
+func drawCard(ordinal : int = -1, overlay : int = -1):
 	angle = 0
 	var new_card = CardBase.instantiate()
 	new_card.CardOrdinal = ordinal

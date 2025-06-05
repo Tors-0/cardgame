@@ -1,47 +1,46 @@
 extends MarginContainer
 
-@onready var OverlayDatabase = load("res://Assets/Cards/OverlaysDatabase.gd")
 var Overlay = null
 var CardInfo
-var OverlayImg
+var OverlayImg : String
 
 @onready var CardDatabase = load("res://Assets/Cards/CardsDatabase.gd")
-var CardOrdinal = null
+var CardOrdinal : int = -1
 var CardType
-var CardImg
+var CardImg : String
 
 # States and transition vars
 enum STATES { InHand, Selected, InMouse, FocusInHand, MoveDrawnCardToHand, ReorganizeHand }
-var startpos = Vector2()
-var targetpos = Vector2()
-var defaultpos = Vector2()
-var startrot = 0
-var targetrot = 0
-@onready var startscale = scale
-@onready var CardSize = preload("res://Playspace.gd").CardSize
-var ZoomInSize = 1.2
+var startpos : Vector2
+var targetpos : Vector2
+var defaultpos : Vector2
+var startrot : float = 0
+var targetrot : float = 0
+@onready var startscale : Vector2 = scale
+@onready var CardSize : Vector2 = preload("res://Playspace.gd").CardSize
+var ZoomInSize : float = 1.2
 @onready var ZoomInPos = Vector2(0, CardSize.y * -0.4)
 var setup = false
 var origscale = scale
 
 # drawtime vars
-var t = 0
-var DRAWTIME = 1
-var ORGANIZETIME = 0.5
-var ZOOMINTIME = 0.05
+var t : float = 0
+var DRAWTIME : float = 1
+var ORGANIZETIME : float = 0.5
+var ZOOMINTIME : float = 0.05
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# gather asset locations
-	if CardOrdinal == null:
+	if CardOrdinal == -1:
 		CardOrdinal = randi_range(0, CardDatabase.DATA.size() - 1)
 	CardType = CardDatabase.DATA[CardOrdinal]
 	CardImg = str("res://Assets/Cards/cardback/", CardType[1], ".png")
 	
-	if Overlay == null:
-		Overlay = OverlayDatabase.WEIGHTS[randi_range(0, OverlayDatabase.WEIGHTS.size() - 1)]
-	CardInfo = OverlayDatabase.DATA.get(Overlay)
+	if Overlay == -1:
+		Overlay = Overlays.WEIGHTS[randi_range(0, Overlays.WEIGHTS.size() - 1)]
+	CardInfo = Overlays.DATA.get(Overlay)
 	OverlayImg = str("res://Assets/Cards/overlay/", CardInfo[2], ".png")
 	
 	# scale children
