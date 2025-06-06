@@ -21,7 +21,7 @@ const DATA = {
 }
 
 const WEIGHTS = [
-	Zero,
+	Zero, Zero,
 	One, One,
 	Two, Two,
 	Three, Three,
@@ -30,10 +30,23 @@ const WEIGHTS = [
 	Six, Six,
 	Seven, Seven,
 	Eight, Eight,
-	Nine, Nine,
-	Skip, Skip,
-	Reverse, Reverse,
-	Draw2, Draw2,
-	Draw4,
-	Wildcard
+	Nine, Nine
 ]
+
+enum TYPES { Number, ReSkip, Draw2, Draw4, Wild, Undef }
+
+
+func getType(overlay : Overlays) -> TYPES:
+	match overlay:
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9:
+			return TYPES.Number
+		10, 11:
+			return TYPES.ReSkip
+		12:
+			return TYPES.Draw2
+		13:
+			return TYPES.Draw4
+		14:
+			return TYPES.Wild
+		_:
+			return TYPES.Undef

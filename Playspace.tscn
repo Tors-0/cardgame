@@ -1,16 +1,25 @@
-[gd_scene load_steps=13 format=3 uid="uid://bnd1rxvegkjfy"]
+[gd_scene load_steps=22 format=3 uid="uid://bnd1rxvegkjfy"]
 
 [ext_resource type="Script" uid="uid://bpeoubfqmv52d" path="res://Playspace.gd" id="1_5ecp0"]
 [ext_resource type="Texture2D" uid="uid://dg2ls5xispc0d" path="res://backgrounds/perlin.png" id="2_ty8yq"]
+[ext_resource type="Texture2D" uid="uid://cbwrt7kcjb1yi" path="res://Assets/Buttons/up.png" id="3_5s15x"]
 [ext_resource type="Texture2D" uid="uid://b18wamh4afy4v" path="res://Assets/Cards/deck-cover-stacked.png" id="3_url1g"]
+[ext_resource type="Texture2D" uid="uid://crxqrlqt5glc2" path="res://Assets/Buttons/play-disabled.png" id="4_2h1v8"]
 [ext_resource type="Texture2D" uid="uid://b1s1fw8m5lwgi" path="res://Assets/Cards/deck-cover-highlight.png" id="4_ty8yq"]
 [ext_resource type="Texture2D" uid="uid://b2ljkusncaytv" path="res://Assets/Cards/deck-cover-locked.png" id="4_url1g"]
+[ext_resource type="Texture2D" uid="uid://dmag5p7ew3vji" path="res://Assets/Buttons/shift.png" id="4_yxgx0"]
 [ext_resource type="Script" uid="uid://b4jw5c8kg1w0x" path="res://DeckDraw.gd" id="5_1h11t"]
+[ext_resource type="BitMap" uid="uid://qqwonjhmugyt" path="res://Assets/Buttons/button-mask.bmp" id="5_u2ewm"]
 [ext_resource type="Texture2D" uid="uid://r3j1j1782tbh" path="res://Assets/UI/textbg.png" id="6_mtt3g"]
 [ext_resource type="Texture2D" uid="uid://b4ggepv20aggn" path="res://Assets/UI/gold.png" id="6_ofwmc"]
+[ext_resource type="Texture2D" uid="uid://73jsvpmxf0ls" path="res://Assets/Buttons/craft-disabled.png" id="6_vhdca"]
 [ext_resource type="Texture2D" uid="uid://cqj64as5n86on" path="res://Assets/Buttons/play.png" id="7_1jsfp"]
+[ext_resource type="BitMap" uid="uid://dlr3i3jk8x3cd" path="res://Assets/Buttons/up-mask.bmp" id="7_ollyg"]
 [ext_resource type="Texture2D" uid="uid://bl8xv13d23r25" path="res://Assets/Buttons/craft.png" id="8_ofwmc"]
+[ext_resource type="Texture2D" uid="uid://bsny4c3qrbjxv" path="res://Assets/Buttons/kill-disabled.png" id="8_ua2wx"]
+[ext_resource type="BitMap" uid="uid://b8wo2g2f7vfne" path="res://Assets/Buttons/shift-mask.bmp" id="9_1j5kp"]
 [ext_resource type="Texture2D" uid="uid://b6u3v7fno6o7v" path="res://Assets/Buttons/kill.png" id="9_mtt3g"]
+[ext_resource type="Script" uid="uid://dcyitclhwrxjw" path="res://Scripts/Craft.gd" id="9_pemp2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mtt3g"]
 font_size = 32
@@ -21,11 +30,9 @@ outline_color = Color(0, 0, 0, 1)
 script = ExtResource("1_5ecp0")
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(288, 242)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_ty8yq")
 centered = false
-offset = Vector2(-480, -403.333)
 
 [node name="Cards" type="Node" parent="."]
 
@@ -37,7 +44,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ButtonUI"]
-custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ButtonUI/MarginContainer"]
@@ -46,23 +52,38 @@ layout_mode = 2
 [node name="Play" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("7_1jsfp")
-texture_pressed = ExtResource("7_1jsfp")
-texture_hover = ExtResource("7_1jsfp")
-texture_disabled = ExtResource("7_1jsfp")
+texture_disabled = ExtResource("4_2h1v8")
+texture_click_mask = ExtResource("5_u2ewm")
 
-[node name="Craft" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
+[node name="CraftButtons" type="CenterContainer" parent="ButtonUI/MarginContainer/HBoxContainer"]
+show_behind_parent = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ButtonUI/MarginContainer/HBoxContainer/CraftButtons"]
+layout_mode = 2
+
+[node name="Up" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_5s15x")
+texture_click_mask = ExtResource("7_ollyg")
+
+[node name="Shift" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("4_yxgx0")
+texture_click_mask = ExtResource("9_1j5kp")
+
+[node name="Craft" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer/CraftButtons"]
 layout_mode = 2
 texture_normal = ExtResource("8_ofwmc")
-texture_pressed = ExtResource("8_ofwmc")
-texture_hover = ExtResource("8_ofwmc")
-texture_disabled = ExtResource("8_ofwmc")
+texture_disabled = ExtResource("6_vhdca")
+texture_click_mask = ExtResource("5_u2ewm")
+script = ExtResource("9_pemp2")
 
 [node name="Kill" type="TextureButton" parent="ButtonUI/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("9_mtt3g")
-texture_pressed = ExtResource("9_mtt3g")
-texture_hover = ExtResource("9_mtt3g")
-texture_disabled = ExtResource("9_mtt3g")
+texture_disabled = ExtResource("8_ua2wx")
+texture_click_mask = ExtResource("5_u2ewm")
 
 [node name="InfoUI" type="CenterContainer" parent="."]
 offset_top = 542.0
@@ -119,13 +140,18 @@ offset_bottom = 40.0
 
 [node name="CardsDrawn" type="Label" parent="Debug"]
 layout_mode = 2
-text = "Cards Drawn:"
+text = "Cards Drawn: 0"
 
 [node name="CardsHeld" type="Label" parent="Debug"]
 layout_mode = 2
-text = "Cards Held:"
+text = "Cards Held: 0"
 
 [connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Play" to="." method="_on_play_gui_input"]
-[connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Craft" to="." method="_on_craft_gui_input"]
+[connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Up" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_up_pressed"]
+[connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Shift" to="." method="_on_shift_pressed"]
+[connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Shift" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_shift_pressed"]
+[connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" to="." method="_on_craft_gui_input"]
+[connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_pressed"]
 [connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Kill" to="." method="_on_kill_gui_input"]
 [connection signal="mouse_entered" from="Deck/DeckDraw" to="Deck/DeckDraw" method="_on_mouse_entered"]

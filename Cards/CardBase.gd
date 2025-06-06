@@ -1,3 +1,4 @@
+
 extends MarginContainer
 
 var Overlay = null
@@ -17,43 +18,49 @@ var defaultpos : Vector2
 var startrot : float = 0
 var targetrot : float = 0
 @onready var startscale : Vector2 = scale
-@onready var CardSize : Vector2 = preload("res://Playspace.gd").CardSize
-var ZoomInSize : float = 1.2
+const CardSize : Vector2 = preload("res://Playspace.gd").CardSize
+static var ZoomInSize : float = 1.2
 @onready var ZoomInPos = Vector2(0, CardSize.y * -0.4)
-var setup = false
-var origscale = scale
+var setup : bool = false
+var origscale : Vector2 = scale
 
 # drawtime vars
 var t : float = 0
-var DRAWTIME : float = 1
-var ORGANIZETIME : float = 0.5
-var ZOOMINTIME : float = 0.05
+static var DRAWTIME : float = 0.5
+static var ORGANIZETIME : float = 0.2
+static var ZOOMINTIME : float = 0.02
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# gather asset locations
-	if CardOrdinal == -1:
-		CardOrdinal = randi_range(0, CardDatabase.DATA.size() - 1)
-	CardType = CardDatabase.DATA[CardOrdinal]
-	CardImg = str("res://Assets/Cards/cardback/", CardType[1], ".png")
-	
 	if Overlay == -1:
 		Overlay = Overlays.WEIGHTS[randi_range(0, Overlays.WEIGHTS.size() - 1)]
 	CardInfo = Overlays.DATA.get(Overlay)
 	OverlayImg = str("res://Assets/Cards/overlay/", CardInfo[2], ".png")
+	
+	if !CardInfo[4]:
+		if CardOrdinal == -1:
+			CardOrdinal = randi_range(0, CardDatabase.DATA.size() - 1)
+		CardType = CardDatabase.DATA[CardOrdinal]
+		CardImg = str("res://Assets/Cards/cardback/", CardType[1], ".png")
+	else:
+		CardOrdinal = 1000
 	
 	# scale children
 	$Focus.scale *= CardSize / $Focus.size
 	$Overlay.texture = load(OverlayImg)
 	
 	# loading & init values
-	$Card.texture = load(CardImg)
+	if CardOrdinal != 1000:
+		$Card.texture = load(CardImg)
 	$CardBack.texture = load("res://Assets/Cards/deck-cover.png")
-	
-	var CardName = str("  ", CardType[0], "  \n  ", CardInfo[1], "  ")
+	var CardName : String
 	if (CardInfo[4]):
 		CardName = str("  ", CardInfo[1], "  ")
+	else:
+		CardName = str("  ", CardType[0], "  \n  ", CardInfo[1], "  ")
+	
 	$CardExtras/MarginContainer/HBoxContainer/MarginContainer/CenterContainer/Name.text = CardName
 	$CardExtras.hide()
 	$CardBack.show()
@@ -65,7 +72,7 @@ func _input(_event):
 	if (Input.is_action_just_released("leftclick")):
 		$CardExtras.visible = false
 
-var state = STATES.InHand
+var state := STATES.InHand
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -76,7 +83,7 @@ func _physics_process(delta):
 		STATES.Selected:
 			if setup:
 				Setup()
-			if t <= DRAWTIME:
+			if t <= 1:
 				position = startpos.lerp(targetpos + ZoomInPos*2, t)
 				rotation = startrot * (1 - t) + targetrot * t
 				scale = startscale.lerp(origscale, t)
@@ -90,7 +97,7 @@ func _physics_process(delta):
 		STATES.FocusInHand:
 			if setup:
 				Setup()
-			if t <= DRAWTIME:
+			if t <= 1:
 				position = startpos.lerp(targetpos + ZoomInPos, t)
 				rotation = startrot * (1 - t) + targetrot * t
 				scale = startscale.lerp(origscale * ZoomInSize, t)
@@ -102,9 +109,9 @@ func _physics_process(delta):
 		STATES.MoveDrawnCardToHand: # animation from deck to hand
 			if setup:
 				Setup()
-			if t <= DRAWTIME:
+			if t <= 1:
 				position = startpos.lerp(targetpos, t)
-				rotation = startrot * (DRAWTIME - t) + targetrot * t
+				rotation = startrot * (1 - t) + targetrot * t
 				scale.x = origscale.x * abs(2*t - 1)
 				if $CardBack.visible:
 					if t >= float(DRAWTIME) / 2:
@@ -118,7 +125,7 @@ func _physics_process(delta):
 		STATES.ReorganizeHand:
 			if setup:
 				Setup()
-			if t <= DRAWTIME:
+			if t <= 1:
 				position = startpos.lerp(targetpos, t)
 				rotation = startrot * (1 - t) + targetrot * t
 				scale = startscale.lerp(origscale, t)
@@ -156,8 +163,11 @@ func _on_focus_gui_input(_event):
 	if Input.is_action_just_pressed("leftclick"):
 		match state:
 			STATES.FocusInHand, STATES.InHand, STATES.MoveDrawnCardToHand:
-				setup = true
-				state = STATES.Selected
+				if $'../../'.countSelectedCards() < 2:
+					setup = true
+					state = STATES.Selected
 			STATES.Selected:
 				setup = true
 				state = STATES.ReorganizeHand
+		
+		$'../../'.updateUI()

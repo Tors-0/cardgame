@@ -1,4 +1,4 @@
-
+class_name CardNames
 
 enum {
 	Basalt, Brown, Camo, Carrot, Cherry, Cloud, Copper, Cornflower,

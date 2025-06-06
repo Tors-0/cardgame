@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://b8wo2g2f7vfne"
+path="res://.godot/imported/shift-mask.bmp-07ba6e21fe6fcd8c4721c88c03cbf9ef.res"
+
+[deps]
+
+source_file="res://Assets/Buttons/shift-mask.bmp"
+dest_files=["res://.godot/imported/shift-mask.bmp-07ba6e21fe6fcd8c4721c88c03cbf9ef.res"]
+
+[params]
+
+create_from=0
+threshold=0.5
