@@ -105,8 +105,7 @@ func organizeHand() -> void:
 		else:
 			Card.setup = true
 	
-	$Debug/CardsDrawn.text = str("Cards Drawn: ", $Deck/DeckDraw.CardsDrawn)
-	$Debug/CardsHeld.text = str("Cards Held: ", $Cards.get_child_count(), "/", $Deck/DeckDraw.MaxHandSize)
+	updateUI()
 
 
 func countSelectedCards() -> int:
@@ -147,6 +146,10 @@ func updateUI() -> void:
 			killButton.disabled = true
 			if hasGold():
 				craftButton.disabled = false
+	
+	$InfoUI/Gold/NinePatchRect/GoldLabel.text = gold_format % gold
+	$Debug/CardsDrawn.text = str("Cards Drawn: ", $Deck/DeckDraw.CardsDrawn)
+	$Debug/CardsHeld.text = str("Cards Held: ", $Cards.get_child_count(), "/", $Deck/DeckDraw.MaxHandSize)
 
 
 func _on_play_gui_input(_event) -> void:
@@ -170,7 +173,6 @@ func _on_kill_gui_input(_event) -> void:
 					Card.state = CardStates.ReorganizeHand
 		organizeHand()
 		updateUI()
-		$InfoUI/Gold/NinePatchRect/GoldLabel.text = gold_format % gold
 
 
 func _on_shift_pressed() -> void:
@@ -184,6 +186,7 @@ func _on_shift_pressed() -> void:
 			Card.get_child(4).hide()
 			Card.setup = true
 			Card.state = CardStates.ReorganizeHand
+		gold -= 1
 		updateUI()
 
 

@@ -18,9 +18,10 @@ var defaultpos : Vector2
 var startrot : float = 0
 var targetrot : float = 0
 @onready var startscale : Vector2 = scale
+var selectedZoom := false
 const CardSize : Vector2 = preload("res://Playspace.gd").CardSize
 static var ZoomInSize : float = 1.2
-@onready var ZoomInPos = Vector2(0, CardSize.y * -0.4)
+@onready var ZoomInPos := Vector2(0, CardSize.y * -0.4)
 var setup : bool = false
 var origscale : Vector2 = scale
 
@@ -67,10 +68,7 @@ func _ready():
 
 
 func _input(_event):
-	if (Input.is_action_just_released("rightclick")):
-		$CardExtras.visible = !$CardExtras.visible
-	if (Input.is_action_just_released("leftclick")):
-		$CardExtras.visible = false
+	pass
 
 var state := STATES.InHand
 
@@ -84,26 +82,30 @@ func _physics_process(delta):
 			if setup:
 				Setup()
 			if t <= 1:
-				position = startpos.lerp(targetpos + ZoomInPos*2, t)
+				position = startpos.lerp(targetpos + ZoomInPos, t)
 				rotation = startrot * (1 - t) + targetrot * t
-				scale = startscale.lerp(origscale, t)
-				t += delta / float(ORGANIZETIME)
+				if selectedZoom:
+					scale = startscale.lerp(origscale * ZoomInSize, t)
+				else:
+					scale = startscale.lerp(origscale, t)
+				t += delta / float(ZOOMINTIME)
 			else:
-				position = targetpos + ZoomInPos*2
+				position = targetpos + ZoomInPos
 				rotation = targetrot
-				scale = origscale
+				if selectedZoom:
+					scale = origscale * ZoomInSize
+				else:
+					scale = origscale
 		STATES.InMouse:
 			pass
 		STATES.FocusInHand:
 			if setup:
 				Setup()
 			if t <= 1:
-				position = startpos.lerp(targetpos + ZoomInPos, t)
 				rotation = startrot * (1 - t) + targetrot * t
 				scale = startscale.lerp(origscale * ZoomInSize, t)
 				t += delta / float(ZOOMINTIME)
 			else:
-				position = targetpos + ZoomInPos
 				rotation = targetrot
 				scale = origscale * ZoomInSize
 		STATES.MoveDrawnCardToHand: # animation from deck to hand
@@ -146,17 +148,25 @@ func Setup():
 
 
 func _on_focus_mouse_entered():
+	$CardExtras.show()
 	match state:
 		STATES.InHand, STATES.ReorganizeHand:
 			setup = true
 			state = STATES.FocusInHand
+		STATES.Selected:
+			setup = true
+			selectedZoom = true
 
 
 func _on_focus_mouse_exited():
+	$CardExtras.hide()
 	match state:
 		STATES.FocusInHand:
 			setup = true
 			state = STATES.ReorganizeHand
+		STATES.Selected:
+			setup = true
+			selectedZoom = false
 
 
 func _on_focus_gui_input(_event):
@@ -169,5 +179,6 @@ func _on_focus_gui_input(_event):
 			STATES.Selected:
 				setup = true
 				state = STATES.ReorganizeHand
+				selectedZoom = false
 		
 		$'../../'.updateUI()
