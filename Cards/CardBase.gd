@@ -18,7 +18,7 @@ var defaultpos : Vector2
 var startrot : float = 0
 var targetrot : float = 0
 @onready var startscale : Vector2 = scale
-var selectedZoom := false
+var selectedZoom : bool = false
 const CardSize : Vector2 = preload("res://Playspace.gd").CardSize
 static var ZoomInSize : float = 1.2
 @onready var ZoomInPos := Vector2(0, CardSize.y * -0.4)
@@ -32,13 +32,13 @@ static var ORGANIZETIME : float = 0.2
 static var ZOOMINTIME : float = 0.02
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func init_textures():
 	# gather asset locations
 	if Overlay == -1:
 		Overlay = Overlays.WEIGHTS[randi_range(0, Overlays.WEIGHTS.size() - 1)]
 	CardInfo = Overlays.DATA.get(Overlay)
 	OverlayImg = str("res://Assets/Cards/overlay/", CardInfo[2], ".png")
+	$Overlay.texture = load(OverlayImg)
 	
 	if !CardInfo[4]:
 		if CardOrdinal == -1:
@@ -47,10 +47,6 @@ func _ready():
 		CardImg = str("res://Assets/Cards/cardback/", CardType[1], ".png")
 	else:
 		CardOrdinal = 1000
-	
-	# scale children
-	$Focus.scale *= CardSize / $Focus.size
-	$Overlay.texture = load(OverlayImg)
 	
 	# loading & init values
 	if CardOrdinal != 1000:
@@ -67,8 +63,12 @@ func _ready():
 	$CardBack.show()
 
 
-func _input(_event):
-	pass
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# scale children
+	$Focus.scale *= CardSize / $Focus.size
+	
+	init_textures()
 
 var state := STATES.InHand
 

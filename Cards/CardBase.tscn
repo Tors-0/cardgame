@@ -54,6 +54,8 @@ size_flags_horizontal = 2
 [node name="NinePatchRect" type="NinePatchRect" parent="CardExtras/MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 texture = ExtResource("4_if7i5")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="CardExtras/MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2

@@ -5,6 +5,13 @@ const CardSize = Vector2(100, 150) * 0.8
 const CardBase = preload("res://Cards/CardBase.tscn")
 const CardStates = preload("res://Cards/CardBase.gd").STATES
 
+static var lang := "en_us"
+static var langFileLoc := str("res://lang/", lang, ".json")
+static var langFileText := FileAccess.get_file_as_string(langFileLoc)
+var langMapDict : Dictionary = JSON.parse_string(langFileText)
+
+var labelSettings := LabelSettings.new()
+
 @onready var ViewportSize = Vector2(get_viewport().size)
 @onready var HandWidth = Vector2(CardSize.x * 0.5, ViewportSize.x - CardSize.x * 1.5)
 @onready var HandHeight = ViewportSize.y - CardSize.y * 2.5
@@ -32,6 +39,9 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	labelSettings.font = load("res://Assets/Fonts/Cantarell-Bold.otf")
+	labelSettings.font_size = 64
+	
 	$Deck/DeckDraw.scale = CardSize / $Deck/DeckDraw.size
 	$Deck/DeckDraw.position = ViewportSize - CardSize * 1.1
 	
@@ -129,6 +139,10 @@ func updateUI() -> void:
 	var killButton : TextureButton = $ButtonUI/MarginContainer/HBoxContainer/Kill
 	var craftButton : TextureButton = $ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft
 	
+	playButton.make_ready()
+	killButton.make_ready()
+	craftButton.make_ready()
+	
 	match countSelectedCards():
 		0:
 			playButton.disabled = true
@@ -182,7 +196,7 @@ func _on_shift_pressed() -> void:
 			Card.CardOrdinal += 1
 			if Card.CardOrdinal >= CardNames.DATA.size():
 				Card.CardOrdinal = 0
-			Card._ready()
+			Card.init_textures()
 			Card.get_child(4).hide()
 			Card.setup = true
 			Card.state = CardStates.ReorganizeHand

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bnd1rxvegkjfy"]
+[gd_scene load_steps=24 format=3 uid="uid://bnd1rxvegkjfy"]
 
 [ext_resource type="Script" uid="uid://bpeoubfqmv52d" path="res://Playspace.gd" id="1_5ecp0"]
 [ext_resource type="Texture2D" uid="uid://dg2ls5xispc0d" path="res://backgrounds/perlin.png" id="2_ty8yq"]
@@ -12,6 +12,7 @@
 [ext_resource type="BitMap" uid="uid://qqwonjhmugyt" path="res://Assets/Buttons/button-mask.bmp" id="5_u2ewm"]
 [ext_resource type="Texture2D" uid="uid://r3j1j1782tbh" path="res://Assets/UI/textbg.png" id="6_mtt3g"]
 [ext_resource type="Texture2D" uid="uid://b4ggepv20aggn" path="res://Assets/UI/gold.png" id="6_ofwmc"]
+[ext_resource type="Script" uid="uid://ukdtl3t5fovc" path="res://Scripts/Play.gd" id="6_ollyg"]
 [ext_resource type="Texture2D" uid="uid://73jsvpmxf0ls" path="res://Assets/Buttons/craft-disabled.png" id="6_vhdca"]
 [ext_resource type="Texture2D" uid="uid://cqj64as5n86on" path="res://Assets/Buttons/play.png" id="7_1jsfp"]
 [ext_resource type="BitMap" uid="uid://dlr3i3jk8x3cd" path="res://Assets/Buttons/up-mask.bmp" id="7_ollyg"]
@@ -20,6 +21,7 @@
 [ext_resource type="BitMap" uid="uid://b8wo2g2f7vfne" path="res://Assets/Buttons/shift-mask.bmp" id="9_1j5kp"]
 [ext_resource type="Texture2D" uid="uid://b6u3v7fno6o7v" path="res://Assets/Buttons/kill.png" id="9_mtt3g"]
 [ext_resource type="Script" uid="uid://dcyitclhwrxjw" path="res://Scripts/Craft.gd" id="9_pemp2"]
+[ext_resource type="Script" uid="uid://c8ycnyt15bxe1" path="res://Scripts/Kill.gd" id="15_u2ewm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mtt3g"]
 font_size = 32
@@ -54,6 +56,7 @@ layout_mode = 2
 texture_normal = ExtResource("7_1jsfp")
 texture_disabled = ExtResource("4_2h1v8")
 texture_click_mask = ExtResource("5_u2ewm")
+script = ExtResource("6_ollyg")
 
 [node name="CraftButtons" type="CenterContainer" parent="ButtonUI/MarginContainer/HBoxContainer"]
 show_behind_parent = true
@@ -84,6 +87,7 @@ layout_mode = 2
 texture_normal = ExtResource("9_mtt3g")
 texture_disabled = ExtResource("8_ua2wx")
 texture_click_mask = ExtResource("5_u2ewm")
+script = ExtResource("15_u2ewm")
 
 [node name="InfoUI" type="CenterContainer" parent="."]
 offset_top = 542.0
@@ -147,11 +151,14 @@ layout_mode = 2
 text = "Cards Held: 0"
 
 [connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Play" to="." method="_on_play_gui_input"]
+[connection signal="ready" from="ButtonUI/MarginContainer/HBoxContainer/Play" to="ButtonUI/MarginContainer/HBoxContainer/Play" method="_on_ready"]
 [connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Up" to="." method="_on_up_pressed"]
 [connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Up" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_up_pressed"]
 [connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Shift" to="." method="_on_shift_pressed"]
 [connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/HBoxContainer/Shift" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_shift_pressed"]
 [connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" to="." method="_on_craft_gui_input"]
 [connection signal="pressed" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_pressed"]
+[connection signal="ready" from="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" to="ButtonUI/MarginContainer/HBoxContainer/CraftButtons/Craft" method="_on_ready"]
 [connection signal="gui_input" from="ButtonUI/MarginContainer/HBoxContainer/Kill" to="." method="_on_kill_gui_input"]
+[connection signal="ready" from="ButtonUI/MarginContainer/HBoxContainer/Kill" to="ButtonUI/MarginContainer/HBoxContainer/Kill" method="_on_ready"]
 [connection signal="mouse_entered" from="Deck/DeckDraw" to="Deck/DeckDraw" method="_on_mouse_entered"]
