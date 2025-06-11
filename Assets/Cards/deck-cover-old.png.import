@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drsnyo0etb4hr"
-path="res://.godot/imported/five.png-35d7018722f0acede0548d869a306965.ctex"
+uid="uid://dpsq07hoctydp"
+path="res://.godot/imported/deck-cover-old.png-886687e14bd91e5057e491300737f91b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/overlay/five.png"
-dest_files=["res://.godot/imported/five.png-35d7018722f0acede0548d869a306965.ctex"]
+source_file="res://Assets/Cards/deck-cover-old.png"
+dest_files=["res://.godot/imported/deck-cover-old.png-886687e14bd91e5057e491300737f91b.ctex"]
 
 [params]
 
